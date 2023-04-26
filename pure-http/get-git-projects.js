@@ -1,4 +1,4 @@
-// Gets all project HTTPS paths (http_url_to_repo) from self-hosted gitlab. Here gitlab is hardcoded, so script is presented as is.
+// Gets all project HTTPS paths (http_url_to_repo) from self-hosted gitlab.
 
 const https = require('https');
 
@@ -7,8 +7,8 @@ if (!process.env.GITLAB_TOKEN) {
   process.exit(1);
 }
 
-if (!process.env.GITLAB_PASSWORD) {
-  console.error('Set GITLAB_PASSWORD env variable');
+if (!process.env.GITLAB_URL) {
+  console.error('Set GITLAB_URL env variable');
   process.exit(1);
 }
 
@@ -39,8 +39,7 @@ async function httpsReq(url) {
           reject(new Error(`Error at JSON parsing (${e.cause}) for ${str}`));
         }
 
-        // slice to remove 'https://'
-        const mappedArr = arr.map((item) => item.http_url_to_repo.slice(8));
+        const mappedArr = arr.map((item) => item.http_url_to_repo);
         const linksArr = (res.headers.link || '')
           .split(',');
 
@@ -82,7 +81,7 @@ async function getProjects() {
     `per_page=${pageSize}`,
   ].join('&');
 
-  let url = `https://git.rvision.pro/api/v4/projects?${query}`;
+  let url = `${process.env.GITLAB_URL}/api/v4/projects?${query}`;
 
   let curPageResult = [];
   do {
@@ -94,7 +93,6 @@ async function getProjects() {
   console.log(
     outResult
       .sort()
-      .map((item) => `https://git-stats-bot:${process.env.GITLAB_PASSWORD}@${item}`).join(',\n')
   );
 }
 
