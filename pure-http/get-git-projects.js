@@ -1,3 +1,5 @@
+// Gets all project HTTPS path to clone from self-hosted gitlab. Here gitlab is hardcoded, so script presented as is.
+
 const https = require('https');
 
 if (!process.env.GITLAB_TOKEN) {
