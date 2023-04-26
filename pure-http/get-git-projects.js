@@ -1,4 +1,4 @@
-// Gets all project HTTPS path to clone from self-hosted gitlab. Here gitlab is hardcoded, so script presented as is.
+// Gets all project HTTPS paths from self-hosted gitlab. Here gitlab is hardcoded, so script presented as is.
 
 const https = require('https');
 
